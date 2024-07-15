@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주석 기능이 있는 문서 편집기</title>
+    <title>확장된 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
@@ -39,7 +39,9 @@
         <button onclick="formatText('bold')">굵게</button>
         <button onclick="formatText('italic')">기울임</button>
         <button onclick="formatText('underline')">밑줄</button>
+        <button onclick="formatText('justifyCenter')">가운데 정렬</button>
         <button onclick="insertTable()">표 삽입</button>
+        <button onclick="insertBulletList()">머릿글 기호</button>
         <input type="file" id="imageInput" accept="image/*" onchange="insertImage(this)">
         <label for="imageInput">이미지 삽입</label>
     </div>
@@ -70,6 +72,11 @@
                 
                 document.execCommand('insertHTML', false, table);
             }
+        }
+
+        function insertBulletList() {
+            document.execCommand('insertUnorderedList', false, null);
+            editor.focus();
         }
 
         function insertImage(input) {
