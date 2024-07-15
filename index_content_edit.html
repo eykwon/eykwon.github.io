@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자동 확장 문서 편집기</title>
+    <title>주석 기능이 있는 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
-            min-height: 200px; /* 최소 높이 설정 */
+            min-height: 200px;
             border: 1px solid #ccc;
             padding: 10px;
             margin-bottom: 10px;
@@ -22,6 +22,15 @@
         }
         table, th, td {
             border: 1px solid black;
+        }
+        .image-container {
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .image-caption {
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -67,16 +76,35 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.className = 'image-container';
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.style.maxWidth = '100%';
-                    document.execCommand('insertHTML', false, img.outerHTML);
+                    img.onclick = function() { addImageCaption(this); };
+
+                    const caption = document.createElement('div');
+                    caption.className = 'image-caption';
+                    caption.textContent = '이미지를 클릭하여 주석 추가';
+
+                    container.appendChild(img);
+                    container.appendChild(caption);
+
+                    document.execCommand('insertHTML', false, container.outerHTML);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // 편집기 내용이 변경될 때마다 높이 조정
+        function addImageCaption(img) {
+            const caption = img.nextElementSibling;
+            const newCaption = prompt("이미지 주석을 입력하세요:", caption.textContent);
+            if (newCaption !== null) {
+                caption.textContent = newCaption;
+            }
+        }
+
         editor.addEventListener('input', adjustEditorHeight);
         
         function adjustEditorHeight() {
@@ -84,7 +112,6 @@
             editor.style.height = editor.scrollHeight + 'px';
         }
 
-        // 초기 높이 설정
         adjustEditorHeight();
     </script>
 </body>
