@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고급 문서 편집기</title>
+    <title>자동 확장 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
-            height: 400px;
+            min-height: 200px; /* 최소 높이 설정 */
             border: 1px solid #ccc;
             padding: 10px;
             margin-bottom: 10px;
@@ -37,9 +37,11 @@
     <div id="editor" contenteditable="true"></div>
 
     <script>
+        const editor = document.getElementById('editor');
+
         function formatText(command) {
             document.execCommand(command, false, null);
-            document.getElementById('editor').focus();
+            editor.focus();
         }
 
         function insertTable() {
@@ -73,6 +75,17 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // 편집기 내용이 변경될 때마다 높이 조정
+        editor.addEventListener('input', adjustEditorHeight);
+        
+        function adjustEditorHeight() {
+            editor.style.height = 'auto';
+            editor.style.height = editor.scrollHeight + 'px';
+        }
+
+        // 초기 높이 설정
+        adjustEditorHeight();
     </script>
 </body>
 </html>
