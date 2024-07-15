@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>개선된 이미지 주석 기능이 있는 문서 편집기</title>
+    <title>실행 취소/재실행 기능이 있는 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
@@ -46,6 +46,8 @@
 </head>
 <body>
     <div class="toolbar">
+        <button onclick="undo()">실행 취소</button>
+        <button onclick="redo()">재실행</button>
         <button onclick="formatText('bold')">굵게</button>
         <button onclick="formatText('italic')">기울임</button>
         <button onclick="formatText('underline')">밑줄</button>
@@ -60,6 +62,14 @@
 
     <script>
         const editor = document.getElementById('editor');
+
+        function undo() {
+            document.execCommand('undo', false, null);
+        }
+
+        function redo() {
+            document.execCommand('redo', false, null);
+        }
 
         function formatText(command) {
             document.execCommand(command, false, null);
