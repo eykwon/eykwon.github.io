@@ -2,42 +2,12 @@
 <html lang="ko">
 <head>
     <!-- 이전 코드와 동일 -->
-    <style>
-        /* 기존 스타일에 추가 */
-        .image-container {
-            margin-bottom: 1em; /* 컨테이너 아래에 여백 추가 */
-        }
-    </style>
 </head>
 <body>
     <!-- 이전 코드와 동일 -->
 
     <script>
         // 이전 함수들은 그대로 유지
-
-        function addImageCaption(img) {
-            const container = img.closest('.image-container');
-            const caption = container.querySelector('.image-caption');
-            const newCaption = prompt("이미지 주석을 입력하세요:", caption.textContent);
-            if (newCaption !== null) {
-                caption.textContent = newCaption;
-                
-                // 주석 추가 후 새 단락 생성 및 커서 이동
-                const newParagraph = document.createElement('p');
-                newParagraph.innerHTML = '<br>'; // 빈 단락
-                container.parentNode.insertBefore(newParagraph, container.nextSibling);
-                
-                // 새 단락으로 커서 이동
-                const range = document.createRange();
-                const sel = window.getSelection();
-                range.setStart(newParagraph, 0);
-                range.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(range);
-                
-                editor.focus(); // 편집기로 포커스 반환
-            }
-        }
 
         function insertImage(input) {
             if (input.files && input.files[0]) {
@@ -69,35 +39,11 @@
                             const range = selection.getRangeAt(0);
                             range.deleteContents();
                             range.insertNode(container);
-                            
-                            // 이미지 뒤에 새 단락 삽입
-                            const newParagraph = document.createElement('p');
-                            newParagraph.innerHTML = '<br>';
-                            container.parentNode.insertBefore(newParagraph, container.nextSibling);
-                            
-                            // 새 단락으로 커서 이동
-                            const newRange = document.createRange();
-                            newRange.setStart(newParagraph, 0);
-                            newRange.collapse(true);
-                            selection.removeAllRanges();
-                            selection.addRange(newRange);
                         } else {
                             editor.appendChild(container);
-                            
-                            // 편집기 끝에 새 단락 추가
-                            const newParagraph = document.createElement('p');
-                            newParagraph.innerHTML = '<br>';
-                            editor.appendChild(newParagraph);
-                            
-                            // 새 단락으로 커서 이동
-                            const range = document.createRange();
-                            range.setStart(newParagraph, 0);
-                            range.collapse(true);
-                            selection.removeAllRanges();
-                            selection.addRange(range);
                         }
 
-                        editor.focus(); // 편집기로 포커스 반환
+                        // 편집기 높이 조정
                         adjustEditorHeight();
                     };
                     img.src = e.target.result;
@@ -106,7 +52,7 @@
             }
         }
 
-        // 다른 함수들은 그대로 유지
+        // 이전 코드와 동일
     </script>
 </body>
 </html>
