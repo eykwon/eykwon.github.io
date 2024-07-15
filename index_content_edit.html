@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간단한 문서 편집기</title>
+    <title>고급 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
-            height: 300px;
+            height: 400px;
             border: 1px solid #ccc;
             padding: 10px;
             margin-bottom: 10px;
+            overflow-y: auto;
         }
         .toolbar button {
             margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -22,6 +30,9 @@
         <button onclick="formatText('bold')">굵게</button>
         <button onclick="formatText('italic')">기울임</button>
         <button onclick="formatText('underline')">밑줄</button>
+        <button onclick="insertTable()">표 삽입</button>
+        <input type="file" id="imageInput" accept="image/*" onchange="insertImage(this)">
+        <label for="imageInput">이미지 삽입</label>
     </div>
     <div id="editor" contenteditable="true"></div>
 
@@ -29,6 +40,38 @@
         function formatText(command) {
             document.execCommand(command, false, null);
             document.getElementById('editor').focus();
+        }
+
+        function insertTable() {
+            const rows = prompt("행 수를 입력하세요:", "3");
+            const cols = prompt("열 수를 입력하세요:", "3");
+            
+            if (rows && cols) {
+                let table = '<table>';
+                for (let i = 0; i < rows; i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < cols; j++) {
+                        table += '<td>내용</td>';
+                    }
+                    table += '</tr>';
+                }
+                table += '</table>';
+                
+                document.execCommand('insertHTML', false, table);
+            }
+        }
+
+        function insertImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%';
+                    document.execCommand('insertHTML', false, img.outerHTML);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
     </script>
 </body>
