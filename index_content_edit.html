@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 문서 편집기</title>
+    <style>
+        #editor {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .toolbar button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button onclick="formatText('bold')">굵게</button>
+        <button onclick="formatText('italic')">기울임</button>
+        <button onclick="formatText('underline')">밑줄</button>
+    </div>
+    <div id="editor" contenteditable="true"></div>
+
+    <script>
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('editor').focus();
+        }
+    </script>
+</body>
+</html>
