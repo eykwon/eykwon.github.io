@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 저장 기능이 있는 문서 편집기</title>
+    <title>개선된 이미지 주석 기능이 있는 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
@@ -26,11 +26,21 @@
         .image-container {
             display: inline-block;
             margin: 10px 0;
+            max-width: 100%;
+        }
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .image-wrapper img {
+            max-width: 100%;
+            display: block;
         }
         .image-caption {
             font-style: italic;
             color: #666;
             margin-top: 5px;
+            text-align: center;
         }
     </style>
 </head>
@@ -87,16 +97,19 @@
                     const container = document.createElement('div');
                     container.className = 'image-container';
 
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'image-wrapper';
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.style.maxWidth = '100%';
                     img.onclick = function() { addImageCaption(this); };
 
                     const caption = document.createElement('div');
                     caption.className = 'image-caption';
                     caption.textContent = '이미지를 클릭하여 주석 추가';
 
-                    container.appendChild(img);
+                    wrapper.appendChild(img);
+                    container.appendChild(wrapper);
                     container.appendChild(caption);
 
                     document.execCommand('insertHTML', false, container.outerHTML);
@@ -106,7 +119,8 @@
         }
 
         function addImageCaption(img) {
-            const caption = img.nextElementSibling;
+            const container = img.closest('.image-container');
+            const caption = container.querySelector('.image-caption');
             const newCaption = prompt("이미지 주석을 입력하세요:", caption.textContent);
             if (newCaption !== null) {
                 caption.textContent = newCaption;
