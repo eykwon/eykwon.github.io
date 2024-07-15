@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>확장된 문서 편집기</title>
+    <title>파일 저장 기능이 있는 문서 편집기</title>
     <style>
         #editor {
             width: 100%;
@@ -44,6 +44,7 @@
         <button onclick="insertBulletList()">머릿글 기호</button>
         <input type="file" id="imageInput" accept="image/*" onchange="insertImage(this)">
         <label for="imageInput">이미지 삽입</label>
+        <button onclick="saveDocument()">문서 저장</button>
     </div>
     <div id="editor" contenteditable="true"></div>
 
@@ -110,6 +111,15 @@
             if (newCaption !== null) {
                 caption.textContent = newCaption;
             }
+        }
+
+        function saveDocument() {
+            const content = editor.innerHTML;
+            const blob = new Blob([content], {type: 'text/html'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'document.html';
+            a.click();
         }
 
         editor.addEventListener('input', adjustEditorHeight);
